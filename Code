@@ -1,0 +1,65 @@
+
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int n=nums1.size(),m=nums2.size();
+        //finding the number of elements before and after median 
+        //of merged array
+
+
+
+        int midelem=(n+m+1)/2;
+
+        //now we have to apply binary search in one of the array 
+        //to decide how many elements have  to be taken from both arrays in 
+        //each half;
+
+        //here we are doing with smaller array as it would be convinient
+           if (n > m) {
+        swap(nums1, nums2);
+        swap(n, m); // Update the lengths of the arrays after swapping
+    }
+    
+         int s=0,e=n;//as we can take min 0 elements from num1 and max n from num1
+         while(s<=e){
+        //here the mid(or partition) will tell how many elements we will take
+         //from this array
+         int num1partion=s+(e-s)/2;
+       //now it is obvious that if  x elements from num1 then  (mid-x) from num2
+         int num2partion=midelem-num1partion;
+
+//now from this we will get left half of merged array 
+//now we have to make sure this is sorted
+//so for this we apply some condition and move our s and e pointer according 
+// to it
+        //so here we will take four pointers
+
+
+        int l1=INT_MIN; //point the max element taken from num1 in left half
+        int l2=INT_MIN; //point the max elem taken from num2  in left half
+        int r1=INT_MAX; //point the min elem taken from num1 in right half
+        int r2=INT_MAX; // point the min elem taken from num2 in right half
+if(num1partion<n)
+r1=nums1[num1partion];
+if(num2partion<m)
+r2=nums2[num2partion];
+if(num1partion>0)
+l1=nums1[num1partion-1];
+if(num2partion>0)
+l2=nums2[num2partion-1];
+//now checking the partition is valid or not
+if(l1<=r2&&l2<=r1){
+  if((n+m)%2)
+  return max(l1,l2);
+  else
+  return ((double)(max(l1, l2) + min(r1, r2))) / 2.0;
+}
+if(l1>r2)
+e=num1partion-1;
+else 
+s=num1partion+1;
+         }
+       return 0;     
+
+    }
+};
